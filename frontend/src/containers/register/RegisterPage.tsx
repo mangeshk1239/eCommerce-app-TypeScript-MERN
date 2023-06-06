@@ -2,6 +2,8 @@ import * as React from 'react';
 import * as M from "@mui/material";
 import Copyright from "../../components/Copyright";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 interface IRegister {
     name: string,
@@ -13,6 +15,8 @@ interface IRegister {
 const defaultTheme = M.createTheme();
 
 export default function RegisterPage(): JSX.Element {
+    const navigate = useNavigate();
+
     return (
         <M.ThemeProvider theme={defaultTheme}>
             <M.Grid container component="main" sx={{ height: '100vh' }}>
@@ -87,13 +91,13 @@ export default function RegisterPage(): JSX.Element {
                             </M.Button>
                             <M.Grid container>
                                 <M.Grid item xs>
-                                    <M.Link href="#" variant="body2">
+                                    {/* <M.Link href="#" variant="body2">
                                         Forgot password?
-                                    </M.Link>
+                                    </M.Link> */}
                                 </M.Grid>
                                 <M.Grid item>
-                                    <M.Link href="#" variant="body2">
-                                        {"Don't have an account? Sign Up"}
+                                    <M.Link onClick={() => navigate("/login")} sx={{ cursor: "pointer" }} variant="body2">
+                                        {"Already have an account? Sign In"}
                                     </M.Link>
                                 </M.Grid>
                             </M.Grid>
@@ -119,7 +123,7 @@ export default function RegisterPage(): JSX.Element {
         </M.ThemeProvider>
     );
 
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
@@ -130,6 +134,12 @@ export default function RegisterPage(): JSX.Element {
             confirm_password: data.get('confirm_password') as string
         };
 
-        console.log("payload", payload);
+        const response: string = await axios.post("http://localhost:3000/api/account/create", { ...payload }, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        console.log("response", response);
     }
 }

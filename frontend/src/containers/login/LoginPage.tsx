@@ -1,24 +1,15 @@
 import * as React from 'react';
 import * as M from "@mui/material";
+import Copyright from "../../components/Copyright";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-
-function Copyright(props: any) {
-    return (
-        <M.Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <M.Link color="inherit" href="https://mui.com/">
-                Your Website
-            </M.Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </M.Typography>
-    );
-}
+import { useNavigate } from 'react-router-dom';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = M.createTheme();
 
 export default function LoginPage(): JSX.Element {
+
+    const navigate = useNavigate();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -103,7 +94,7 @@ export default function LoginPage(): JSX.Element {
                                     </M.Link>
                                 </M.Grid>
                                 <M.Grid item>
-                                    <M.Link href="#" variant="body2">
+                                    <M.Link onClick={() => navigate("/register")} sx={{ cursor: "pointer" }} variant="body2">
                                         {"Don't have an account? Sign Up"}
                                     </M.Link>
                                 </M.Grid>
