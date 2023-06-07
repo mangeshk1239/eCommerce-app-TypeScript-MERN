@@ -8,19 +8,26 @@ export async function registerAccount(req: Request, res: Response): Promise<void
 
     try {
 
-        const encrypted_password: string = await bcrypt.hash(password, 10);
+        const ifExists: IAccount | null = await Account.findOne({ accountEmail: email });
 
-        const account = new Account<IAccount>({
-            accountName: name,
-            accountEmail: email,
-            accountPassword: encrypted_password,
-            createdAt: new Date()
-        });
+        if (ifExists) {
 
-        await account.save();
-        // const check_if_password_is_correct = await bcrypt.compare(club_password, hash);
+            res.status(405).send({ success: false, message: "The provided email already exists, Please try again..." });
 
-        res.status(200).send("Ok");
+        } else {
+            const encrypted_password: string = await bcrypt.hash(password, 10);
+
+            const account = new Account<IAccount>({
+                accountName: name,
+                accountEmail: email,
+                accountPassword: encrypted_password,
+                createdAt: new Date()
+            });
+
+            await account.save();
+
+            res.status(200).send({ success: true, message: "Account registered successfully!" });
+        }
 
     } catch (error) {
         res.status(500).send("error");
@@ -30,8 +37,25 @@ export async function registerAccount(req: Request, res: Response): Promise<void
 
 export async function loginAccount(req: Request, res: Response): Promise<void> {
 
+    const { email, password } = req.body;
+
     try {
-        res.status(200).send("Ok");
+        const ifExists: IAccount | null = await Account.findOne({ accountEmail: email });
+
+        if (ifExists) {
+
+            const passwordMatch: boolean = await bcrypt.compare(password, ifExists.accountPassword);
+
+            if (passwordMatch) {
+                res.status(200).send({ success: true });
+            } else {
+                res.status(405).send({ success: false, message: "Incorrect password, Please try again..." });
+            }
+
+        } else {
+            res.status(404).send({ success: false, message: "The provided email does not exists, Please try again..." });
+        }
+
     } catch (error) {
         res.status(500).send("error");
     }

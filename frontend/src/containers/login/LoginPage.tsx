@@ -2,7 +2,13 @@ import * as React from 'react';
 import * as M from "@mui/material";
 import Copyright from "../../components/Copyright";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+
+interface ILogin {
+    email: string,
+    password: string,
+}
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = M.createTheme();
@@ -10,15 +16,6 @@ const defaultTheme = M.createTheme();
 export default function LoginPage(): JSX.Element {
 
     const navigate = useNavigate();
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
 
     return (
         <M.ThemeProvider theme={defaultTheme}>
@@ -106,4 +103,22 @@ export default function LoginPage(): JSX.Element {
             </M.Grid>
         </M.ThemeProvider>
     );
+
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+
+        const payload: ILogin = {
+            email: data.get('email') as string,
+            password: data.get('password') as string,
+        };
+
+        const response: string = await axios.post("http://localhost:3000/api/account/login", { ...payload }, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        console.log("response", response);
+    }
 }

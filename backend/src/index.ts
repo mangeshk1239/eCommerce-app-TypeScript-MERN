@@ -13,5 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/api/account/create", accountController.registerAccount);
+app.post("/api/account/login", accountController.loginAccount);
+
 
 app.listen(process.env.PORT);
