@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as M from "@mui/material";
 import Copyright from "../../components/Copyright";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useNavigate } from 'react-router-dom';
 
 interface IRegister {
@@ -16,6 +16,22 @@ const defaultTheme = M.createTheme();
 
 export default function RegisterPage(): JSX.Element {
     const navigate = useNavigate();
+
+    const [open, setOpen] = React.useState<boolean>(false);
+    const [msg, setMsg] = React.useState<string>("");
+    const [type, setType] = React.useState<string>("success");
+    const [checked, setChecked] = React.useState<boolean>(false);
+
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setChecked(event.target.checked);
+    };
 
     return (
         <M.ThemeProvider theme={defaultTheme}>
@@ -78,7 +94,11 @@ export default function RegisterPage(): JSX.Element {
                                 autoComplete="current-password"
                             />
                             <M.FormControlLabel
-                                control={<M.Checkbox value="remember" color="primary" />}
+
+                                control={<M.Checkbox
+                                    checked={checked}
+                                    onChange={handleChange}
+                                    value="remember" color="primary" />}
                                 label="I agree with the Terms and Conditions"
                             />
                             <M.Button
@@ -120,6 +140,9 @@ export default function RegisterPage(): JSX.Element {
                     }}
                 />
             </M.Grid>
+            <M.Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <M.Alert onClose={handleClose} severity={type} sx={{ width: '100%' }}>{msg}</M.Alert>
+            </M.Snackbar>
         </M.ThemeProvider>
     );
 
@@ -134,12 +157,30 @@ export default function RegisterPage(): JSX.Element {
             confirm_password: data.get('confirm_password') as string
         };
 
-        const response: string = await axios.post("http://localhost:3000/api/account/create", { ...payload }, {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
+        if (checked) {
 
-        console.log("response", response);
+            const response: AxiosResponse = await axios.post("/api/account/register", { ...payload }, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.data.success) {
+                setOpen(true);
+                setType("success");
+                setMsg(response.data.message);
+                setTimeout(() => navigate("/login"), 3000);
+            } else {
+                setOpen(true);
+                setType("error");
+                setMsg(response.data.message);
+            }
+
+        } else {
+            setOpen(true);
+            setType("warning");
+            setMsg("Please make sure you agree with the Terms and Conditions before Registering for an account.");
+        }
+
     }
 }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as M from "@mui/material";
 import Copyright from "../../components/Copyright";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useNavigate } from 'react-router-dom';
 
 interface ILogin {
@@ -113,12 +113,27 @@ export default function LoginPage(): JSX.Element {
             password: data.get('password') as string,
         };
 
-        const response: string = await axios.post("http://localhost:3000/api/account/login", { ...payload }, {
+        const response: AxiosResponse = await axios.post("/api/account/login", { ...payload }, {
             headers: {
                 "Content-Type": "application/json"
             }
         });
 
-        console.log("response", response);
+        if (response.data.success) {
+            createCookie("access_token", response.data.access_token);
+            createCookie("account_data", response.data.data);
+            navigate("/dashboard");
+        }
+
+    }
+
+
+
+    //   function deleteCookie(name) {
+    //     document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    //   };
+
+    function createCookie(name: string, value: string): void {
+        document.cookie = name + "=" + value + "; path=/";
     }
 }

@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { IAccount, Account } from "../db/models/Account";
+import { IAccountData, AccountData } from "../db/models/AccountData";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export async function registerAccount(req: Request, res: Response): Promise<void> {
 
@@ -12,7 +14,7 @@ export async function registerAccount(req: Request, res: Response): Promise<void
 
         if (ifExists) {
 
-            res.status(405).send({ success: false, message: "The provided email already exists, Please try again..." });
+            res.status(200).send({ success: false, message: "The provided email already exists, Please try again..." });
 
         } else {
             const encrypted_password: string = await bcrypt.hash(password, 10);
@@ -24,13 +26,21 @@ export async function registerAccount(req: Request, res: Response): Promise<void
                 createdAt: new Date()
             });
 
-            await account.save();
+            const accountData = new AccountData<IAccountData>({
+                accountName: name,
+                accountEmail: email,
+                createdAt: new Date()
+            });
 
-            res.status(200).send({ success: true, message: "Account registered successfully!" });
+            await account.save();
+            await accountData.save();
+
+            res.status(200).send({ success: true, message: "Account registered successfully! Redirecting to the Sign in page in 3 seconds..." });
         }
 
     } catch (error) {
-        res.status(500).send("error");
+        console.log("error", error);
+        res.status(500).send({ success: false, message: "Something went wrong, Please try again..." });
     }
 
 };
@@ -47,7 +57,10 @@ export async function loginAccount(req: Request, res: Response): Promise<void> {
             const passwordMatch: boolean = await bcrypt.compare(password, ifExists.accountPassword);
 
             if (passwordMatch) {
-                res.status(200).send({ success: true });
+
+                const access_token = jwt.sign(email as string, process.env.SECRET_KEY as string);
+
+                res.status(200).send({ success: true, data: email, access_token });
             } else {
                 res.status(405).send({ success: false, message: "Incorrect password, Please try again..." });
             }
@@ -57,7 +70,8 @@ export async function loginAccount(req: Request, res: Response): Promise<void> {
         }
 
     } catch (error) {
-        res.status(500).send("error");
+        console.log("error", error);
+        res.status(500).send({ success: false, message: "Something went wrong, Please try again..." });
     }
 
 };
