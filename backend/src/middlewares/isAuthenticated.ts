@@ -6,17 +6,17 @@ export default function isAuthenticated(req: Request, res: Response, next: NextF
     try {
 
         let access_token: string | undefined = req.headers.authorization as string;
+        access_token = access_token.replace("Bearer ", "");
 
-        console.log("access_token", access_token.replace("Bearer ", ""));
+        const verified = jwt.verify(access_token, process.env.SECRET_KEY as string);
 
-        // access_token = access_token.replace("Bearer ");
+        if (verified) {
+            res.locals.email = verified;
+            next();
+        }
 
-        // const verified = jwt.verify(JSON.stringify(), JSON.stringify(process.env.SECRET_KEY));
-
-        // console.log("verified", verified);
-
-        res.send({ status: "true" });
     } catch (error) {
         console.log("ERROR", error);
+        res.status(401).send({ success: false });
     }
 }

@@ -60,7 +60,7 @@ export async function loginAccount(req: Request, res: Response): Promise<void> {
 
                 const access_token = jwt.sign(email as string, process.env.SECRET_KEY as string);
 
-                res.status(200).send({ success: true, data: email, access_token });
+                res.status(200).send({ success: true, access_token });
             } else {
                 res.status(405).send({ success: false, message: "Incorrect password, Please try again..." });
             }

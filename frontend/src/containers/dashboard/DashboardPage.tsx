@@ -12,10 +12,10 @@ export default function DashboardPage(): JSX.Element {
 
     const access_token: string | undefined = getCookie("access_token");
 
-    const { data, isFetching, isSuccess } = useQuery<AxiosResponse, Error>(['getPageData'], getPageData);
+    const { error, data, isFetching, isSuccess } = useQuery<AxiosResponse, Error>(['getPageData'], getPageData);
 
-
-    // console.log("data", data);
+    console.log("data", data);
+    // https://dummyjson.com/products
     // console.log("isFetching", isFetching);
     // console.log("isSuccess", isSuccess);
 

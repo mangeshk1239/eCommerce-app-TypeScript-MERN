@@ -121,7 +121,6 @@ export default function LoginPage(): JSX.Element {
 
         if (response.data.success) {
             createCookie("access_token", response.data.access_token);
-            createCookie("account_data", response.data.data);
             navigate("/dashboard");
         }
 

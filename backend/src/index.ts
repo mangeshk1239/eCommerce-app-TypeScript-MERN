@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./db/connect";
 import * as accountController from "./controllers/account";
+import * as dashboardController from "./controllers/dashboard";
 import isAuthenticated from "./middlewares/isAuthenticated";
 
 dotenv.config();
@@ -15,7 +16,7 @@ app.use(express.json());
 
 app.post("/api/account/register", accountController.registerAccount);
 app.post("/api/account/login", accountController.loginAccount);
-app.get("/api/account/dashboard", isAuthenticated);
+app.get("/api/account/dashboard", isAuthenticated, dashboardController.getDashboardData);
 
 
 app.listen(process.env.PORT);
