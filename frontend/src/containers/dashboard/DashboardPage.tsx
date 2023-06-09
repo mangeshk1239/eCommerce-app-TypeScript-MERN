@@ -12,16 +12,7 @@ export default function DashboardPage(): JSX.Element {
 
     const access_token: string | undefined = getCookie("access_token");
 
-    const { error, data, isFetching, isSuccess } = useQuery<AxiosResponse, Error>(['getPageData'], getPageData);
-
-    console.log("data", data);
-    // https://dummyjson.com/products
-    // console.log("isFetching", isFetching);
-    // console.log("isSuccess", isSuccess);
-
-    // if (isLoading) return "Loading...";
-
-    // if (error) return "An error has occurred: " + error.message;
+    const { data, isSuccess } = useQuery<AxiosResponse, Error>(['getDashboardPageData'], getPageData);
 
     const [open, setOpen] = React.useState(true);
     const drawerWidth = 240;
@@ -30,7 +21,7 @@ export default function DashboardPage(): JSX.Element {
         <M.ThemeProvider theme={defaultTheme}>
             <M.Box sx={{ display: 'flex' }}>
                 <M.CssBaseline />
-                <AppBar open={open} setOpen={setOpen} drawerWidth={drawerWidth} />
+                <AppBar open={open} setOpen={setOpen} drawerWidth={drawerWidth} pageName={"Dashboard"} />
                 <Drawer open={open} setOpen={setOpen} drawerWidth={drawerWidth} />
                 <M.Box
                     component="main"

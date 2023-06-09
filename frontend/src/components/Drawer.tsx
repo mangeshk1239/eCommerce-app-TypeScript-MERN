@@ -5,8 +5,7 @@ import MuiDrawer from '@mui/material/Drawer';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import LayersIcon from '@mui/icons-material/Layers';
+import { useNavigate } from 'react-router-dom';
 
 interface IProps {
     open: boolean,
@@ -15,6 +14,8 @@ interface IProps {
 }
 
 export default function Drawer({ open, setOpen, drawerWidth }: IProps): JSX.Element {
+
+    const navigate = useNavigate();
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -63,35 +64,23 @@ export default function Drawer({ open, setOpen, drawerWidth }: IProps): JSX.Elem
             <M.Divider />
             <M.List component="nav">
                 <React.Fragment>
-                    <M.ListItemButton>
+                    <M.ListItemButton onClick={() => navigate("/dashboard")}>
                         <M.ListItemIcon>
                             <DashboardIcon />
                         </M.ListItemIcon>
                         <M.ListItemText primary="Dashboard" />
                     </M.ListItemButton>
-                    <M.ListItemButton>
+                    <M.ListItemButton onClick={() => navigate("/products")}>
+                        <M.ListItemIcon>
+                            <PeopleIcon />
+                        </M.ListItemIcon>
+                        <M.ListItemText primary="Products" />
+                    </M.ListItemButton>
+                    <M.ListItemButton onClick={() => navigate("/orders")}>
                         <M.ListItemIcon>
                             <ShoppingCartIcon />
                         </M.ListItemIcon>
                         <M.ListItemText primary="Orders" />
-                    </M.ListItemButton>
-                    <M.ListItemButton>
-                        <M.ListItemIcon>
-                            <PeopleIcon />
-                        </M.ListItemIcon>
-                        <M.ListItemText primary="Customers" />
-                    </M.ListItemButton>
-                    <M.ListItemButton>
-                        <M.ListItemIcon>
-                            <BarChartIcon />
-                        </M.ListItemIcon>
-                        <M.ListItemText primary="Reports" />
-                    </M.ListItemButton>
-                    <M.ListItemButton>
-                        <M.ListItemIcon>
-                            <LayersIcon />
-                        </M.ListItemIcon>
-                        <M.ListItemText primary="Integrations" />
                     </M.ListItemButton>
                 </React.Fragment>
                 <M.Divider sx={{ my: 1 }} />
