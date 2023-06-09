@@ -48,43 +48,45 @@ export default function Drawer({ open, setOpen, drawerWidth }: IProps): JSX.Elem
     );
 
     return (
-        <Drawer variant="permanent" open={open}>
-            <M.Toolbar
-                sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    px: [1],
-                }}
-            >
-                <M.IconButton onClick={toggleDrawer}>
-                    <ChevronLeftIcon />
-                </M.IconButton>
-            </M.Toolbar>
-            <M.Divider />
-            <M.List component="nav">
-                <React.Fragment>
-                    <M.ListItemButton onClick={() => navigate("/dashboard")}>
-                        <M.ListItemIcon>
-                            <DashboardIcon />
-                        </M.ListItemIcon>
-                        <M.ListItemText primary="Dashboard" />
-                    </M.ListItemButton>
-                    <M.ListItemButton onClick={() => navigate("/products")}>
-                        <M.ListItemIcon>
-                            <PeopleIcon />
-                        </M.ListItemIcon>
-                        <M.ListItemText primary="Products" />
-                    </M.ListItemButton>
-                    <M.ListItemButton onClick={() => navigate("/orders")}>
-                        <M.ListItemIcon>
-                            <ShoppingCartIcon />
-                        </M.ListItemIcon>
-                        <M.ListItemText primary="Orders" />
-                    </M.ListItemButton>
-                </React.Fragment>
-                <M.Divider sx={{ my: 1 }} />
-            </M.List>
-        </Drawer>
+        <div className="customDrawerContainer">
+            <Drawer variant="permanent" open={open}>
+                <M.Toolbar
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-end',
+                        px: [1],
+                    }}
+                >
+                    <M.IconButton onClick={toggleDrawer}>
+                        <ChevronLeftIcon />
+                    </M.IconButton>
+                </M.Toolbar>
+                <M.Divider />
+                <M.List component="nav">
+                    <React.Fragment>
+                        <M.ListItemButton onClick={() => navigate("/dashboard")}>
+                            <M.ListItemIcon>
+                                <DashboardIcon />
+                            </M.ListItemIcon>
+                            <M.ListItemText primary="Dashboard" />
+                        </M.ListItemButton>
+                        <M.ListItemButton onClick={() => navigate("/products")}>
+                            <M.ListItemIcon>
+                                <PeopleIcon />
+                            </M.ListItemIcon>
+                            <M.ListItemText primary="Products" />
+                        </M.ListItemButton>
+                        <M.ListItemButton onClick={() => navigate("/orders")}>
+                            <M.ListItemIcon>
+                                <ShoppingCartIcon />
+                            </M.ListItemIcon>
+                            <M.ListItemText primary="Orders" />
+                        </M.ListItemButton>
+                    </React.Fragment>
+                    <M.Divider sx={{ my: 1 }} />
+                </M.List>
+            </Drawer>
+        </div>
     )
 }

@@ -1,0 +1,33 @@
+.customPaperContainer .MuiBox-root {
+    background-color: #222222;
+}
+
+.customAccountContainer .MuiPaper-root,
+.customPaperContainer,
+.customPaperContainer .MuiDrawer-paper,
+.customPaperContainer .MuiGrid-container>.MuiGrid-item>.MuiPaper-rounded {
+    background-color: #121212;
+}
+
+.customAccountContainer .MuiInputBase-root,
+.customAccountContainer .MuiCheckbox-root,
+.customAccountContainer .MuiFormLabel-root,
+.customAccountContainer .MuiTypography-root,
+.customDrawerContainer .MuiList-root,
+.customDrawerContainer .MuiListItemIcon-root,
+.customDrawerContainer .MuiIconButton-root,
+.customPaperContainer .MuiCardContent-root {
+    color: white;
+}
+
+.customDrawerContainer {
+    background-color: #121212;
+}
+
+.customDrawerContainer .MuiDivider-fullWidth {
+    background-color: #313030;
+}
+
+.customPaperContainer .MuiPaper-root .MuiContainer-root .MuiGrid-container .MuiPaper-rounded {
+    border: 2px solid white;
+}

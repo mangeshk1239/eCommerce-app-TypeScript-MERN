@@ -35,25 +35,25 @@ export default function ProductPage(): JSX.Element {
     const drawerWidth = 240;
 
     return (
-        <M.ThemeProvider theme={defaultTheme}>
-            <M.Box sx={{ display: 'flex' }}>
-                <M.CssBaseline />
-                <AppBar open={open} setOpen={setOpen} drawerWidth={drawerWidth} pageName={"Products"} />
-                <Drawer open={open} setOpen={setOpen} drawerWidth={drawerWidth} />
-                <M.Box
-                    component="main"
-                    sx={{
-                        backgroundColor: (theme) =>
-                            theme.palette.mode === 'light'
-                                ? theme.palette.grey[100]
-                                : theme.palette.grey[900],
-                        flexGrow: 1,
-                        height: '100vh',
-                        overflow: 'auto',
-                    }}
-                >
-                    <M.Toolbar />
-                    <div className="customPaperContainer">
+        <div className="customPaperContainer">
+            <M.ThemeProvider theme={defaultTheme}>
+                <M.Box sx={{ display: 'flex' }}>
+                    <M.CssBaseline />
+                    <AppBar open={open} setOpen={setOpen} drawerWidth={drawerWidth} pageName={"Products"} />
+                    <Drawer open={open} setOpen={setOpen} drawerWidth={drawerWidth} />
+                    <M.Box
+                        component="main"
+                        sx={{
+                            backgroundColor: (theme) =>
+                                theme.palette.mode === 'light'
+                                    ? theme.palette.grey[100]
+                                    : theme.palette.grey[900],
+                            flexGrow: 1,
+                            height: '100vh',
+                            overflow: 'auto',
+                        }}
+                    >
+                        <M.Toolbar />
                         <M.Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                             <M.Grid container spacing={3}>
                                 <M.Grid item xs={12}>
@@ -89,11 +89,11 @@ export default function ProductPage(): JSX.Element {
                             </M.Grid>
                             <Copyright sx={{ pt: 4 }} />
                         </M.Container>
-                    </div>
 
+                    </M.Box>
                 </M.Box>
-            </M.Box>
-        </M.ThemeProvider>
+            </M.ThemeProvider>
+        </div>
     );
 
     async function getPageData(): Promise<AxiosResponse> {
@@ -106,7 +106,7 @@ export default function ProductPage(): JSX.Element {
 
     function getCookie(name: string): string | undefined {
         const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
+        const parts: any = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 }
