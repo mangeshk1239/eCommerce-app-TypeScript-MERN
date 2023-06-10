@@ -2,10 +2,11 @@ import * as React from 'react';
 import * as M from "@mui/material";
 import AppBar from "../../components/AppBar";
 import Drawer from "../../components/Drawer";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import Copyright from '../../components/Copyright';
 import Quantity from "../../components/Quantity";
+import { ParentContext, ACTION } from '../../App';
 
 interface IProduct {
     brand: string,
@@ -21,25 +22,35 @@ interface IProduct {
     title: string,
 }
 
+interface ICartItem {
+    product_id: number,
+    product_name: string,
+    product_price: number | undefined,
+    product_quantity: number,
+    product_image: string
+}
+
 const defaultTheme = M.createTheme();
 
 export default function SingleProductPage(): JSX.Element {
 
+    const fetchContext = React.useContext(ParentContext);
+    const { state, dispatch } = fetchContext;
     const access_token: string | undefined = getCookie("access_token");
 
     const { data, isSuccess } = useQuery<IProduct, Error>([`getSingleProductData${window.location.pathname.replace("/product/", "")}`], getPageData);
 
-    console.log("data", data);
     let discount_price: number | undefined;
 
     if (data) {
         discount_price = Number((data?.price - (data?.price * data?.discountPercentage) / 100).toFixed(0));
     }
 
-    console.log("discount_price", discount_price);
-
     const [open, setOpen] = React.useState<boolean>(true);
+    const [quantity, setQuantity] = React.useState<number>(1);
     const drawerWidth = 240;
+
+    console.log("state", state);
 
     return (
         <div className="customPaperContainer">
@@ -96,12 +107,12 @@ export default function SingleProductPage(): JSX.Element {
                                                     ?
                                                     <M.Grid container spacing={4}>
                                                         <M.Grid item xs={12} md={8} lg={9}>
-                                                            <M.Typography variant="body1" gutterBottom>{data?.brand}</M.Typography>
-                                                            <M.Typography variant="h2" gutterBottom><b>{data?.title}</b></M.Typography>
-                                                            <M.Typography variant="h5" gutterBottom><s>${data?.price}</s>&nbsp;<u><i>${discount_price}</i></u></M.Typography>
-                                                            <Quantity />
-                                                            <M.Typography variant="body2" gutterBottom><b>{data?.description}</b></M.Typography>
-                                                            <M.Button variant="contained">Add to Cart</M.Button>
+                                                            <M.Typography color={"white"} variant="body1" gutterBottom>{data?.brand}</M.Typography>
+                                                            <M.Typography color={"white"} variant="h2" gutterBottom><b>{data?.title}</b></M.Typography>
+                                                            <M.Typography color={"white"} variant="h5" gutterBottom><s>${data?.price}</s>&nbsp;<u><i>${discount_price}</i></u></M.Typography>
+                                                            <Quantity quantity={quantity} setQuantity={setQuantity} />
+                                                            <M.Typography color={"white"} variant="body2" gutterBottom><b>{data?.description}</b></M.Typography>
+                                                            <M.Button onClick={() => handleCart(data)} sx={{ marginTop: "5%" }} variant="contained">Add to Cart</M.Button>
                                                         </M.Grid>
                                                     </M.Grid>
                                                     :
@@ -131,5 +142,18 @@ export default function SingleProductPage(): JSX.Element {
         const value = `; ${document.cookie}`;
         const parts: any = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    function handleCart(data): void {
+
+        const payload: ICartItem = {
+            product_id: data.id,
+            product_name: data.title,
+            product_price: discount_price,
+            product_quantity: quantity,
+            product_image: data.thumbnail
+        };
+
+        dispatch({ type: ACTION.CART, payload });
     }
 }

@@ -83,6 +83,12 @@ export default function Drawer({ open, setOpen, drawerWidth }: IProps): JSX.Elem
                             </M.ListItemIcon>
                             <M.ListItemText primary="Orders" />
                         </M.ListItemButton>
+                        <M.ListItemButton onClick={() => navigate("/cart")}>
+                            <M.ListItemIcon>
+                                <ShoppingCartIcon />
+                            </M.ListItemIcon>
+                            <M.ListItemText primary="Cart" />
+                        </M.ListItemButton>
                     </React.Fragment>
                     <M.Divider sx={{ my: 1 }} />
                 </M.List>
