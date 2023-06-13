@@ -8,6 +8,14 @@ import Copyright from '../../components/Copyright';
 import { useNavigate } from 'react-router-dom';
 import { ParentContext } from '../../App';
 
+interface ICartItem {
+    product_id: number,
+    product_name: string,
+    product_price: number | undefined,
+    product_quantity: number,
+    product_image: string
+}
+
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = M.createTheme();
 
@@ -16,14 +24,9 @@ export default function CartPage(): JSX.Element {
     const fetchContext = React.useContext(ParentContext);
     const { state, dispatch } = fetchContext;
 
-    const access_token: string | undefined = getCookie("access_token");
-
-    // const { data, isSuccess } = useQuery<AxiosResponse, Error>(['getDashboardPageData'], getPageData);
     const navigate = useNavigate();
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState<boolean>(true);
     const drawerWidth = 240;
-
-    console.log("state", state);
 
     return (
         <div className="customPaperContainer">
@@ -54,7 +57,7 @@ export default function CartPage(): JSX.Element {
                                             p: 2,
                                             display: 'flex',
                                             flexDirection: 'column',
-                                            height: 240,
+                                            height: 540,
                                         }}
                                     >
                                         <M.Container sx={{ py: 4 }} maxWidth="md">
@@ -79,6 +82,25 @@ export default function CartPage(): JSX.Element {
                                                 </M.Grid>
                                             </M.Grid>
                                             <M.Divider sx={{ border: "1px solid white" }} />
+                                            {
+                                                state.CART.length > 0 ?
+                                                    state.CART.map((item: ICartItem) => {
+                                                        return <M.Grid key={item.product_id} container spacing={4}>
+                                                            <M.Grid item xs={12} md={8} lg={4}>
+                                                                <div style={{ display: "flex", gap: "5%" }}>
+                                                                    <img src={item.product_image} width={100} height={100} />
+                                                                    <p>Title: <b>{item.product_name}</b></p>
+                                                                    <p>Price: ${item.product_price}</p>
+                                                                </div>
+                                                            </M.Grid>
+                                                            <M.Grid item xs={12} md={8} lg={4}>{item.product_quantity}</M.Grid>
+                                                            <M.Grid item xs={12} md={8} lg={4}>${item.product_price as number * item.product_quantity}</M.Grid>
+                                                        </M.Grid>
+                                                    })
+                                                    :
+                                                    <>Your Cart is Empty</>
+
+                                            }
                                         </M.Container>
                                     </M.Paper>
                                 </M.Grid>
@@ -90,18 +112,4 @@ export default function CartPage(): JSX.Element {
             </M.ThemeProvider>
         </div>
     );
-
-    async function getPageData(): Promise<AxiosResponse> {
-        return await axios.get("/api/account/dashboard", {
-            headers: {
-                Authorization: `Bearer ${access_token}`
-            }
-        }).then(response => response.data);
-    }
-
-    function getCookie(name: string): string | undefined {
-        const value = `; ${document.cookie}`;
-        const parts: any = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
 }
