@@ -6,6 +6,7 @@ import DashboardPage from './containers/dashboard/DashboardPage';
 import ProductPage from "./containers/products/ProductPage";
 import SingleProductPage from './containers/single-product/SingleProduct';
 import CartPage from './containers/cart/CartPage';
+import CheckoutPage from "./containers/checkout/CheckoutPage";
 
 interface ICartItem {
   product_id: number,
@@ -47,6 +48,7 @@ function App(): JSX.Element {
         <Route path='/products' element={<ProductPage />} />
         <Route path='/product/:id' element={<SingleProductPage />} />
         <Route path='/cart' element={<CartPage />} />
+        <Route path='/checkout' element={<CheckoutPage />} />
       </Routes>
     </ParentContext.Provider>
   );

@@ -2,7 +2,10 @@ import * as M from "@mui/material";
 import * as React from "react";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Logout from '@mui/icons-material/Logout';
+import { useNavigate } from 'react-router-dom';
+import { ParentContext } from "../App";
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
@@ -16,6 +19,11 @@ interface IProps {
 }
 
 export default function AppBar({ open, setOpen, drawerWidth, pageName }: IProps): JSX.Element {
+
+    const navigate = useNavigate();
+
+    const fetchContext = React.useContext(ParentContext);
+    const { state } = fetchContext;
 
     const Appbar = M.styled(MuiAppBar, {
         shouldForwardProp: (prop) => prop !== 'open',
@@ -77,6 +85,11 @@ export default function AppBar({ open, setOpen, drawerWidth, pageName }: IProps)
                 >
                     {pageName}
                 </M.Typography>
+                <M.IconButton color="inherit" onClick={() => navigate("/cart")}>
+                    <M.Badge badgeContent={state.CART.length} color="secondary">
+                        <ShoppingCartIcon />
+                    </M.Badge>
+                </M.IconButton>
                 <M.IconButton color="inherit">
                     <M.Tooltip title="Account settings">
                         <M.IconButton

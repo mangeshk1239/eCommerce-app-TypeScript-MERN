@@ -70,7 +70,7 @@ export default function ProductPage(): JSX.Element {
                                                                         <M.CardMedia component="div" sx={{ pt: '56.25%', }} image={card.thumbnail} />
                                                                         <M.CardContent sx={{ flexGrow: 1 }}>
                                                                             <M.Typography gutterBottom variant="h5" component="h2">{card.title}</M.Typography>
-                                                                            <M.Typography><b>${card.price}</b></M.Typography>
+                                                                            <M.Typography><s>${card.price}</s>&nbsp;<b><i>${Number((card.price - (card.price * card.discountPercentage) / 100).toFixed(0))}</i></b></M.Typography>
                                                                         </M.CardContent>
                                                                         <M.CardActions>
                                                                             <M.Button size="small" onClick={() => { navigate(`/product/${card.id}`) }}>View</M.Button>
