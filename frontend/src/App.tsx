@@ -16,24 +16,78 @@ interface ICartItem {
   product_image: string
 }
 
+interface ICheckoutAddress {
+  first_name: string,
+  last_name: string,
+  first_address: string,
+  last_address: string,
+  city: string,
+  state: string,
+  zip_code: string,
+  country: string
+}
+
+interface ICheckoutPayment {
+  card_name: string,
+  card_number: string,
+  card_expiry: string,
+  card_cvv: string
+}
+
 interface ICart {
   CART: ICartItem[],
+  CHECKOUT_ADDRESS: ICheckoutAddress,
+  CHECKOUT_PAYMENT: ICheckoutPayment
 }
 
 interface IAction {
-  CART: string
+  CART: string,
+  CHECKOUT_ADDRESS: ICheckoutAddress,
+  CHECKOUT_PAYMENT: ICheckoutPayment
 }
 
 export const ParentContext = React.createContext({});
 
 export const ACTION: IAction = {
   CART: 'cart',
+  CHECKOUT_ADDRESS: {
+    first_name: "first_name",
+    last_name: "last_name",
+    first_address: "first_address",
+    last_address: "last_address",
+    city: "city",
+    state: "state",
+    zip_code: "zip_code",
+    country: "country"
+  },
+  CHECKOUT_PAYMENT: {
+    card_name: "card_name",
+    card_number: "card_number",
+    card_expiry: "card_expiry",
+    card_cvv: "card_cvv"
+  }
 };
 
 function App(): JSX.Element {
 
   const INITIAL_VALUES: ICart = {
     CART: [],
+    CHECKOUT_ADDRESS: {
+      first_name: "",
+      last_name: "",
+      first_address: "",
+      last_address: "",
+      city: "",
+      state: "",
+      zip_code: "",
+      country: ""
+    },
+    CHECKOUT_PAYMENT: {
+      card_name: "",
+      card_number: "",
+      card_expiry: "",
+      card_cvv: ""
+    }
   };
 
   const [state, dispatch] = React.useReducer(reducer, INITIAL_VALUES);
@@ -63,6 +117,38 @@ function App(): JSX.Element {
         cartArray = [...state.CART];
         cartArray.push(action.payload);
         return { ...state, CART: cartArray };
+
+      case ACTION.CHECKOUT_ADDRESS.first_name:
+
+        return { ...state, CHECKOUT_ADDRESS: { ...state.CHECKOUT_ADDRESS, first_name: action.payload } };
+
+      case ACTION.CHECKOUT_ADDRESS.last_name:
+
+        return { ...state, CHECKOUT_ADDRESS: { ...state.CHECKOUT_ADDRESS, last_name: action.payload } };
+
+      case ACTION.CHECKOUT_ADDRESS.first_address:
+
+        return { ...state, CHECKOUT_ADDRESS: { ...state.CHECKOUT_ADDRESS, first_address: action.payload } };
+
+      case ACTION.CHECKOUT_ADDRESS.last_address:
+
+        return { ...state, CHECKOUT_ADDRESS: { ...state.CHECKOUT_ADDRESS, last_address: action.payload } };
+
+      case ACTION.CHECKOUT_ADDRESS.city:
+
+        return { ...state, CHECKOUT_ADDRESS: { ...state.CHECKOUT_ADDRESS, city: action.payload } };
+
+      case ACTION.CHECKOUT_ADDRESS.state:
+
+        return { ...state, CHECKOUT_ADDRESS: { ...state.CHECKOUT_ADDRESS, state: action.payload } };
+
+      case ACTION.CHECKOUT_ADDRESS.zip_code:
+
+        return { ...state, CHECKOUT_ADDRESS: { ...state.CHECKOUT_ADDRESS, zip_code: action.payload } };
+
+      case ACTION.CHECKOUT_ADDRESS.country:
+
+        return { ...state, CHECKOUT_ADDRESS: { ...state.CHECKOUT_ADDRESS, country: action.payload } };
 
       default:
         return state;

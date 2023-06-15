@@ -4,6 +4,7 @@ import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 import Copyright from "../../components/Copyright";
+import { ParentContext } from '../../App';
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
@@ -24,6 +25,10 @@ function getStepContent(step: number) {
 const defaultTheme = M.createTheme();
 
 export default function CheckoutPage() {
+
+  const fetchContext = React.useContext(ParentContext);
+  const { state } = fetchContext;
+
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {

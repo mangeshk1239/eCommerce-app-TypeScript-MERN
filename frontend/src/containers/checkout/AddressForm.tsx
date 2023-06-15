@@ -1,7 +1,13 @@
 import * as React from 'react';
 import * as M from "@mui/material";
+import { ParentContext } from '../../App';
+import { ACTION } from '../../App';
 
 export default function AddressForm() {
+
+    const fetchContext = React.useContext(ParentContext);
+    const { state, dispatch } = fetchContext;
+
     return (
         <React.Fragment>
             <M.Typography variant="h6" gutterBottom>
@@ -17,6 +23,7 @@ export default function AddressForm() {
                         fullWidth
                         autoComplete="given-name"
                         variant="standard"
+                        onChange={(e) => dispatch({ type: ACTION.CHECKOUT_ADDRESS.first_name, payload: e.target.value })}
                     />
                 </M.Grid>
                 <M.Grid item xs={12} sm={6}>
@@ -28,6 +35,7 @@ export default function AddressForm() {
                         fullWidth
                         autoComplete="family-name"
                         variant="standard"
+                        onChange={(e) => dispatch({ type: ACTION.CHECKOUT_ADDRESS.last_name, payload: e.target.value })}
                     />
                 </M.Grid>
                 <M.Grid item xs={12}>
@@ -39,6 +47,7 @@ export default function AddressForm() {
                         fullWidth
                         autoComplete="shipping address-line1"
                         variant="standard"
+                        onChange={(e) => dispatch({ type: ACTION.CHECKOUT_ADDRESS.first_address, payload: e.target.value })}
                     />
                 </M.Grid>
                 <M.Grid item xs={12}>
@@ -49,6 +58,7 @@ export default function AddressForm() {
                         fullWidth
                         autoComplete="shipping address-line2"
                         variant="standard"
+                        onChange={(e) => dispatch({ type: ACTION.CHECKOUT_ADDRESS.last_address, payload: e.target.value })}
                     />
                 </M.Grid>
                 <M.Grid item xs={12} sm={6}>
@@ -60,6 +70,7 @@ export default function AddressForm() {
                         fullWidth
                         autoComplete="shipping address-level2"
                         variant="standard"
+                        onChange={(e) => dispatch({ type: ACTION.CHECKOUT_ADDRESS.city, payload: e.target.value })}
                     />
                 </M.Grid>
                 <M.Grid item xs={12} sm={6}>
@@ -69,6 +80,7 @@ export default function AddressForm() {
                         label="State/Province/Region"
                         fullWidth
                         variant="standard"
+                        onChange={(e) => dispatch({ type: ACTION.CHECKOUT_ADDRESS.state, payload: e.target.value })}
                     />
                 </M.Grid>
                 <M.Grid item xs={12} sm={6}>
@@ -80,6 +92,7 @@ export default function AddressForm() {
                         fullWidth
                         autoComplete="shipping postal-code"
                         variant="standard"
+                        onChange={(e) => dispatch({ type: ACTION.CHECKOUT_ADDRESS.zip_code, payload: e.target.value })}
                     />
                 </M.Grid>
                 <M.Grid item xs={12} sm={6}>
@@ -91,6 +104,7 @@ export default function AddressForm() {
                         fullWidth
                         autoComplete="shipping country"
                         variant="standard"
+                        onChange={(e) => dispatch({ type: ACTION.CHECKOUT_ADDRESS.country, payload: e.target.value })}
                     />
                 </M.Grid>
                 <M.Grid item xs={12}>

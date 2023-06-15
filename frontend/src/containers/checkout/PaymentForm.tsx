@@ -1,7 +1,15 @@
 import * as React from 'react';
 import * as M from "@mui/material";
+import { ParentContext } from '../../App';
+import { ACTION } from '../../App';
 
 export default function PaymentForm() {
+
+    const fetchContext = React.useContext(ParentContext);
+    const { state, dispatch } = fetchContext;
+
+    console.log("PAYMNTY", state);
+
     return (
         <React.Fragment>
             <M.Typography variant="h6" gutterBottom>
@@ -16,6 +24,7 @@ export default function PaymentForm() {
                         fullWidth
                         autoComplete="cc-name"
                         variant="standard"
+                        onChange={(e) => dispatch({ type: ACTION.CHECKOUT_PAYMENT.card_name, payload: e.target.value })}
                     />
                 </M.Grid>
                 <M.Grid item xs={12} md={6}>
@@ -26,6 +35,7 @@ export default function PaymentForm() {
                         fullWidth
                         autoComplete="cc-number"
                         variant="standard"
+                        onChange={(e) => dispatch({ type: ACTION.CHECKOUT_PAYMENT.card_number, payload: e.target.value })}
                     />
                 </M.Grid>
                 <M.Grid item xs={12} md={6}>
@@ -36,6 +46,7 @@ export default function PaymentForm() {
                         fullWidth
                         autoComplete="cc-exp"
                         variant="standard"
+                        onChange={(e) => dispatch({ type: ACTION.CHECKOUT_PAYMENT.card_expiry, payload: e.target.value })}
                     />
                 </M.Grid>
                 <M.Grid item xs={12} md={6}>
@@ -47,6 +58,7 @@ export default function PaymentForm() {
                         fullWidth
                         autoComplete="cc-csc"
                         variant="standard"
+                        onChange={(e) => dispatch({ type: ACTION.CHECKOUT_PAYMENT.card_cvv, payload: e.target.value })}
                     />
                 </M.Grid>
                 <M.Grid item xs={12}>
