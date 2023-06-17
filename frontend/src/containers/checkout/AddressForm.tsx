@@ -23,6 +23,7 @@ export default function AddressForm() {
                         fullWidth
                         autoComplete="given-name"
                         variant="standard"
+                        value={state.CHECKOUT_ADDRESS.first_name}
                         onChange={(e) => dispatch({ type: ACTION.CHECKOUT_ADDRESS.first_name, payload: e.target.value })}
                     />
                 </M.Grid>
@@ -35,6 +36,7 @@ export default function AddressForm() {
                         fullWidth
                         autoComplete="family-name"
                         variant="standard"
+                        value={state.CHECKOUT_ADDRESS.last_name}
                         onChange={(e) => dispatch({ type: ACTION.CHECKOUT_ADDRESS.last_name, payload: e.target.value })}
                     />
                 </M.Grid>
@@ -47,6 +49,7 @@ export default function AddressForm() {
                         fullWidth
                         autoComplete="shipping address-line1"
                         variant="standard"
+                        value={state.CHECKOUT_ADDRESS.first_address}
                         onChange={(e) => dispatch({ type: ACTION.CHECKOUT_ADDRESS.first_address, payload: e.target.value })}
                     />
                 </M.Grid>
@@ -58,6 +61,7 @@ export default function AddressForm() {
                         fullWidth
                         autoComplete="shipping address-line2"
                         variant="standard"
+                        value={state.CHECKOUT_ADDRESS.last_address}
                         onChange={(e) => dispatch({ type: ACTION.CHECKOUT_ADDRESS.last_address, payload: e.target.value })}
                     />
                 </M.Grid>
@@ -70,6 +74,7 @@ export default function AddressForm() {
                         fullWidth
                         autoComplete="shipping address-level2"
                         variant="standard"
+                        value={state.CHECKOUT_ADDRESS.city}
                         onChange={(e) => dispatch({ type: ACTION.CHECKOUT_ADDRESS.city, payload: e.target.value })}
                     />
                 </M.Grid>
@@ -80,6 +85,7 @@ export default function AddressForm() {
                         label="State/Province/Region"
                         fullWidth
                         variant="standard"
+                        value={state.CHECKOUT_ADDRESS.state}
                         onChange={(e) => dispatch({ type: ACTION.CHECKOUT_ADDRESS.state, payload: e.target.value })}
                     />
                 </M.Grid>
@@ -92,6 +98,7 @@ export default function AddressForm() {
                         fullWidth
                         autoComplete="shipping postal-code"
                         variant="standard"
+                        value={state.CHECKOUT_ADDRESS.zip_code}
                         onChange={(e) => dispatch({ type: ACTION.CHECKOUT_ADDRESS.zip_code, payload: e.target.value })}
                     />
                 </M.Grid>
@@ -104,6 +111,7 @@ export default function AddressForm() {
                         fullWidth
                         autoComplete="shipping country"
                         variant="standard"
+                        value={state.CHECKOUT_ADDRESS.country}
                         onChange={(e) => dispatch({ type: ACTION.CHECKOUT_ADDRESS.country, payload: e.target.value })}
                     />
                 </M.Grid>

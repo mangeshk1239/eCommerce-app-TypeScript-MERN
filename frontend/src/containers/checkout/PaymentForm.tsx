@@ -8,7 +8,6 @@ export default function PaymentForm() {
     const fetchContext = React.useContext(ParentContext);
     const { state, dispatch } = fetchContext;
 
-    console.log("PAYMNTY", state);
 
     return (
         <React.Fragment>
@@ -24,6 +23,7 @@ export default function PaymentForm() {
                         fullWidth
                         autoComplete="cc-name"
                         variant="standard"
+                        value={state.CHECKOUT_PAYMENT.card_name}
                         onChange={(e) => dispatch({ type: ACTION.CHECKOUT_PAYMENT.card_name, payload: e.target.value })}
                     />
                 </M.Grid>
@@ -35,6 +35,7 @@ export default function PaymentForm() {
                         fullWidth
                         autoComplete="cc-number"
                         variant="standard"
+                        value={state.CHECKOUT_PAYMENT.card_number}
                         onChange={(e) => dispatch({ type: ACTION.CHECKOUT_PAYMENT.card_number, payload: e.target.value })}
                     />
                 </M.Grid>
@@ -46,6 +47,7 @@ export default function PaymentForm() {
                         fullWidth
                         autoComplete="cc-exp"
                         variant="standard"
+                        value={state.CHECKOUT_PAYMENT.card_expiry}
                         onChange={(e) => dispatch({ type: ACTION.CHECKOUT_PAYMENT.card_expiry, payload: e.target.value })}
                     />
                 </M.Grid>
@@ -58,6 +60,7 @@ export default function PaymentForm() {
                         fullWidth
                         autoComplete="cc-csc"
                         variant="standard"
+                        value={state.CHECKOUT_PAYMENT.card_cvv}
                         onChange={(e) => dispatch({ type: ACTION.CHECKOUT_PAYMENT.card_cvv, payload: e.target.value })}
                     />
                 </M.Grid>

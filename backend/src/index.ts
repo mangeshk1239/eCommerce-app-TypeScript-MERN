@@ -15,9 +15,14 @@ const app: Express = express();
 app.use(cors());
 app.use(express.json());
 
-app.post("/api/account/register", accountController.registerAccount);
-app.post("/api/account/login", accountController.loginAccount);
+// GET
 app.get("/api/account/dashboard", isAuthenticated, dashboardController.getDashboardData);
 app.get("/api/account/products", isAuthenticated, productsController.getProductsData);
+app.get("/api/account/cart", isAuthenticated, (req: Request, res: Response) => res.status(200).send({ success: true }));
+app.get("/api/account/checkout", isAuthenticated, (req: Request, res: Response) => res.status(200).send({ success: true }));
+
+// POST
+app.post("/api/account/register", accountController.registerAccount);
+app.post("/api/account/login", accountController.loginAccount);
 
 app.listen(process.env.PORT);

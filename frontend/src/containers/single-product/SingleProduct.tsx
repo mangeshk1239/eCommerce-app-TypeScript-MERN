@@ -2,11 +2,12 @@ import * as React from 'react';
 import * as M from "@mui/material";
 import AppBar from "../../components/AppBar";
 import Drawer from "../../components/Drawer";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useQuery } from "@tanstack/react-query";
 import Copyright from '../../components/Copyright';
 import Quantity from "../../components/Quantity";
 import { ParentContext, ACTION } from '../../App';
+import { useNavigate } from 'react-router-dom';
 
 interface IProduct {
     brand: string,
@@ -34,11 +35,18 @@ const defaultTheme = M.createTheme();
 
 export default function SingleProductPage(): JSX.Element {
 
-    const fetchContext = React.useContext(ParentContext);
-    const { state, dispatch } = fetchContext;
+    const navigate = useNavigate();
     const access_token: string | undefined = getCookie("access_token");
 
-    const { data, isSuccess } = useQuery<IProduct, Error>([`getSingleProductData${window.location.pathname.replace("/product/", "")}`], getPageData);
+    const { data, isSuccess, error } = useQuery<AxiosResponse, Error>({
+        queryKey: [`getSingleProductData${window.location.pathname.replace("/product/", "")}`],
+        queryFn: getPageData,
+        cacheTime: 0,
+        retry: false
+    });
+
+    const fetchContext = React.useContext(ParentContext);
+    const { state, dispatch } = fetchContext;
 
     let discount_price: number | undefined;
 
@@ -50,7 +58,7 @@ export default function SingleProductPage(): JSX.Element {
     const [quantity, setQuantity] = React.useState<number>(1);
     const drawerWidth = 240;
 
-    console.log("state", state);
+    isAuthenticated(error);
 
     return (
         <div className="customPaperContainer">
@@ -156,4 +164,9 @@ export default function SingleProductPage(): JSX.Element {
 
         dispatch({ type: ACTION.CART, payload });
     }
+
+    function isAuthenticated(error) {
+        if (error?.response.status === 401) return navigate("/login");
+    }
+    
 }

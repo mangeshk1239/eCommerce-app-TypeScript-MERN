@@ -4,18 +4,27 @@ import AppBar from "../../components/AppBar";
 import Drawer from "../../components/Drawer";
 import axios, { AxiosResponse } from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from 'react-router-dom';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = M.createTheme();
 
 export default function DashboardPage(): JSX.Element {
 
+    const navigate = useNavigate();
     const access_token: string | undefined = getCookie("access_token");
 
-    // const { data, isSuccess } = useQuery<AxiosResponse, Error>(['getDashboardPageData'], getPageData);
+    const { error } = useQuery<AxiosResponse, Error>({
+        queryKey: ['getDashboardPageData'],
+        queryFn: getPageData,
+        cacheTime: 0,
+        retry: false
+    });
 
     const [open, setOpen] = React.useState(true);
     const drawerWidth = 240;
+
+    isAuthenticated(error);
 
     return (
         <div className="customPaperContainer">
@@ -90,4 +99,9 @@ export default function DashboardPage(): JSX.Element {
         const parts: any = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
+
+    function isAuthenticated(error) {
+        if (error?.response.status === 401) return navigate("/login");
+    }
+    
 }

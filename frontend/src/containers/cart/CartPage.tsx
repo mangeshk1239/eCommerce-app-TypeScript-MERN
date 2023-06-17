@@ -21,10 +21,19 @@ const defaultTheme = M.createTheme();
 
 export default function CartPage(): JSX.Element {
 
+    const navigate = useNavigate();
+    const access_token: string | undefined = getCookie("access_token");
+
+    const { data, isSuccess, error } = useQuery<AxiosResponse, Error>({
+        queryKey: ['getCartPageData'],
+        queryFn: getPageData,
+        cacheTime: 0,
+        retry: false
+    });
+
     const fetchContext = React.useContext(ParentContext);
     const { state, dispatch } = fetchContext;
 
-    const navigate = useNavigate();
     const [open, setOpen] = React.useState<boolean>(true);
     const drawerWidth = 240;
 
@@ -33,6 +42,8 @@ export default function CartPage(): JSX.Element {
     if (state) {
         subTotal = state.CART.map(ele => ele.product_price * ele.product_quantity).reduce((a: number, b: number) => a + b, 0);
     }
+
+    isAuthenticated(error);
 
     return (
         <div className="customPaperContainer">
@@ -137,4 +148,22 @@ export default function CartPage(): JSX.Element {
             </M.ThemeProvider>
         </div>
     );
+
+    async function getPageData(): Promise<AxiosResponse> {
+        return await axios.get("/api/account/cart", {
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
+        }).then(response => response.data);
+    }
+
+    function getCookie(name: string): string | undefined {
+        const value = `; ${document.cookie}`;
+        const parts: any = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    function isAuthenticated(error) {
+        if (error?.response.status === 401) return navigate("/login");
+    }
 }

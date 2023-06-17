@@ -150,6 +150,22 @@ function App(): JSX.Element {
 
         return { ...state, CHECKOUT_ADDRESS: { ...state.CHECKOUT_ADDRESS, country: action.payload } };
 
+      case ACTION.CHECKOUT_PAYMENT.card_name:
+
+        return { ...state, CHECKOUT_PAYMENT: { ...state.CHECKOUT_PAYMENT, card_name: action.payload } };
+
+      case ACTION.CHECKOUT_PAYMENT.card_number:
+
+        return { ...state, CHECKOUT_PAYMENT: { ...state.CHECKOUT_PAYMENT, card_number: action.payload } };
+
+      case ACTION.CHECKOUT_PAYMENT.card_expiry:
+
+        return { ...state, CHECKOUT_PAYMENT: { ...state.CHECKOUT_PAYMENT, card_expiry: action.payload } };
+
+      case ACTION.CHECKOUT_PAYMENT.card_cvv:
+
+        return { ...state, CHECKOUT_PAYMENT: { ...state.CHECKOUT_PAYMENT, card_cvv: action.payload } };
+
       default:
         return state;
     }

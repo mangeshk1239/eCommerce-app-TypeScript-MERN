@@ -18,6 +18,13 @@ const defaultTheme = M.createTheme();
 export default function RegisterPage(): JSX.Element {
     const navigate = useNavigate();
 
+    React.useEffect(() => {
+        const access_token: string | undefined = getCookie("access_token");
+        if (access_token) {
+            navigate("/dashboard");
+        }
+    }, []);
+
     const [open, setOpen] = React.useState<boolean>(false);
     const [msg, setMsg] = React.useState<string>("");
     const [type, setType] = React.useState<AlertColor>("success");
@@ -186,4 +193,11 @@ export default function RegisterPage(): JSX.Element {
         }
 
     }
+
+    function getCookie(name: string): string | undefined {
+        const value = `; ${document.cookie}`;
+        const parts: any = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+    
 }

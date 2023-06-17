@@ -10,12 +10,18 @@ interface ILogin {
     password: string,
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = M.createTheme();
 
 export default function LoginPage(): JSX.Element {
 
     const navigate = useNavigate();
+
+    React.useEffect(() => {
+        const access_token: string | undefined = getCookie("access_token");
+        if (access_token) {
+            navigate("/dashboard");
+        }
+    }, []);
 
     return (
         <div className='customAccountContainer'>
@@ -128,7 +134,11 @@ export default function LoginPage(): JSX.Element {
 
     }
 
-
+    function getCookie(name: string): string | undefined {
+        const value = `; ${document.cookie}`;
+        const parts: any = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
 
     //   function deleteCookie(name) {
     //     document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -137,4 +147,5 @@ export default function LoginPage(): JSX.Element {
     function createCookie(name: string, value: string): void {
         document.cookie = name + "=" + value + "; path=/";
     }
+    
 }

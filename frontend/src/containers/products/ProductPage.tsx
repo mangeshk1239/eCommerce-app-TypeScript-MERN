@@ -29,10 +29,17 @@ export default function ProductPage(): JSX.Element {
 
     const access_token: string | undefined = getCookie("access_token");
 
-    const { data, isSuccess } = useQuery<AxiosResponse, Error>(['getProductPageData'], getPageData);
+    const { data, isSuccess, error } = useQuery<AxiosResponse, Error>({
+        queryKey: ['getProductPageData'],
+        queryFn: getPageData,
+        cacheTime: 0,
+        retry: false
+    });
 
     const [open, setOpen] = React.useState<boolean>(true);
     const drawerWidth = 240;
+
+    isAuthenticated(error);
 
     return (
         <div className="customPaperContainer">
@@ -109,4 +116,9 @@ export default function ProductPage(): JSX.Element {
         const parts: any = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
+
+    function isAuthenticated(error) {
+        if (error?.response.status === 401) return navigate("/login");
+    }
+    
 }

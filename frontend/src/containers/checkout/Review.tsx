@@ -1,29 +1,15 @@
 import * as React from 'react';
 import * as M from "@mui/material";
+import { ParentContext } from '../../App';
 
-const products = [
-    {
-        name: 'Product 1',
-        desc: 'A nice thing',
-        price: '$9.99',
-    },
-    {
-        name: 'Product 2',
-        desc: 'Another thing',
-        price: '$3.45',
-    },
-    {
-        name: 'Product 3',
-        desc: 'Something else',
-        price: '$6.51',
-    },
-    {
-        name: 'Product 4',
-        desc: 'Best thing of all',
-        price: '$14.11',
-    },
-    { name: 'Shipping', desc: '', price: 'Free' },
-];
+interface ICartItem {
+    product_id: number,
+    product_name: string,
+    product_price: number,
+    product_quantity: number,
+    product_image: string
+}
+
 const addresses = ['1 MUI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
 const payments = [
     { name: 'Card type', detail: 'Visa' },
@@ -33,23 +19,29 @@ const payments = [
 ];
 
 export default function Review() {
+    const fetchContext = React.useContext(ParentContext);
+    const { state, dispatch } = fetchContext;
+
+    let total: number;
+    if (state) {
+        total = state.CART.map(ele => ele.product_price * ele.product_quantity).reduce((a: number, b: number) => a + b, 0);
+    }
+
     return (
         <React.Fragment>
             <M.Typography variant="h6" gutterBottom>
                 Order summary
             </M.Typography>
             <M.List disablePadding>
-                {products.map((product) => (
-                    <M.ListItem key={product.name} sx={{ py: 1, px: 0 }}>
-                        <M.ListItemText primary={product.name} secondary={product.desc} />
-                        <M.Typography variant="body2">{product.price}</M.Typography>
+                {state.CART.map((item: ICartItem) => (
+                    <M.ListItem key={item.product_id} sx={{ py: 1, px: 0 }}>
+                        <M.ListItemText primary={item.product_name} secondary={`Quantity: ${item.product_quantity}`} />
+                        <M.Typography variant="body2">${item.product_price * item.product_quantity}</M.Typography>
                     </M.ListItem>
                 ))}
                 <M.ListItem sx={{ py: 1, px: 0 }}>
                     <M.ListItemText primary="Total" />
-                    <M.Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                        $34.06
-                    </M.Typography>
+                    <M.Typography variant="subtitle1" sx={{ fontWeight: 700 }}>${total}</M.Typography>
                 </M.ListItem>
             </M.List>
             <M.Grid container spacing={2}>
