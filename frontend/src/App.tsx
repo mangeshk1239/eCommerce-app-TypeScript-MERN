@@ -7,44 +7,7 @@ import ProductPage from "./containers/products/ProductPage";
 import SingleProductPage from './containers/single-product/SingleProduct';
 import CartPage from './containers/cart/CartPage';
 import CheckoutPage from "./containers/checkout/CheckoutPage";
-
-interface ICartItem {
-  product_id: number,
-  product_name: string,
-  product_price: number,
-  product_quantity: number,
-  product_image: string
-}
-
-interface ICheckoutAddress {
-  first_name: string,
-  last_name: string,
-  first_address: string,
-  last_address: string,
-  city: string,
-  state: string,
-  zip_code: string,
-  country: string
-}
-
-interface ICheckoutPayment {
-  card_name: string,
-  card_number: string,
-  card_expiry: string,
-  card_cvv: string
-}
-
-interface ICart {
-  CART: ICartItem[],
-  CHECKOUT_ADDRESS: ICheckoutAddress,
-  CHECKOUT_PAYMENT: ICheckoutPayment
-}
-
-interface IAction {
-  CART: string,
-  CHECKOUT_ADDRESS: ICheckoutAddress,
-  CHECKOUT_PAYMENT: ICheckoutPayment
-}
+import { ICart, IAction } from "./resources/interface";
 
 export const ParentContext = React.createContext({});
 
@@ -107,7 +70,8 @@ function App(): JSX.Element {
     </ParentContext.Provider>
   );
 
-  function reducer(state, action) {
+  function reducer(state: ICart, action: { type: string, payload: any }) {
+    console.log("ACTION", action);
 
     let cartArray;
 

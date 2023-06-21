@@ -8,6 +8,7 @@ import { ParentContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosResponse } from "axios";
+import StripeCheckout from 'react-stripe-checkout';
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
@@ -24,7 +25,6 @@ function getStepContent(step: number) {
   }
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = M.createTheme();
 
 export default function CheckoutPage() {
@@ -32,7 +32,7 @@ export default function CheckoutPage() {
   const navigate = useNavigate();
   const access_token: string | undefined = getCookie("access_token");
 
-  const { data, isSuccess, error } = useQuery<AxiosResponse, Error>({
+  const { data, error } = useQuery<AxiosResponse, Error>({
     queryKey: ['getCheckoutPageData'],
     queryFn: getPageData,
     cacheTime: 0,
@@ -42,10 +42,20 @@ export default function CheckoutPage() {
   const fetchContext = React.useContext(ParentContext);
   const { state } = fetchContext;
 
-  const [activeStep, setActiveStep] = React.useState(0);
+  if (state.CART.length === 0) return navigate("/cart");
+
+  const [activeStep, setActiveStep] = React.useState<number>(0);
 
   const handleNext = () => {
-    setActiveStep(activeStep + 1);
+
+    const checkEmptyValue = Object.values(state.CHECKOUT_ADDRESS).includes("");
+
+    if (checkEmptyValue) {
+      alert("Please fill in all the details");
+    } else {
+      setActiveStep(activeStep + 1);
+    }
+
   };
 
   const handleBack = () => {
@@ -53,6 +63,11 @@ export default function CheckoutPage() {
   };
 
   isAuthenticated(error);
+
+  let total: number | undefined;
+  if (state) {
+    total = state.CART.map((ele: ICartItem) => ele.product_price * ele.product_quantity).reduce((a: number, b: number) => a + b, 0);
+  }
 
   return (
     <M.ThemeProvider theme={defaultTheme}>
@@ -90,13 +105,36 @@ export default function CheckoutPage() {
                     Back
                   </M.Button>
                 )}
-                <M.Button
-                  variant="contained"
-                  onClick={handleNext}
-                  sx={{ mt: 3, ml: 1 }}
-                >
-                  {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
-                </M.Button>
+                {
+                  activeStep === 2 ? (
+                    <M.Button
+                      variant="contained"
+                      // onClick={handleNext}
+                      sx={{ mt: 3, ml: 1 }}
+                    >
+                      <StripeCheckout
+                        name="Stripe Checkout"
+                        image="https://images.ctfassets.net/fzn2n1nzq965/HTTOloNPhisV9P4hlMPNA/cacf1bb88b9fc492dfad34378d844280/Stripe_icon_-_square.svg?q=80&w=1082"
+                        ComponentClass="div"
+                        panelLabel={`PAY`}
+                        amount={total as number * 100}
+                        currency="USD"
+                        stripeKey={data.stripe_key}
+                        email={data.email}
+                        token={onToken}
+                      />
+                    </M.Button>
+
+                  ) : (
+                    <M.Button
+                      variant="contained"
+                      onClick={handleNext}
+                      sx={{ mt: 3, ml: 1 }}
+                    >
+                      {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                    </M.Button>
+                  )
+                }
               </M.Box>
             </React.Fragment>
           )}
@@ -120,7 +158,12 @@ export default function CheckoutPage() {
     if (parts.length === 2) return parts.pop().split(';').shift();
   }
 
-  function isAuthenticated(error) {
+  function isAuthenticated(error: any) {
     if (error?.response.status === 401) return navigate("/login");
   }
+
+  function onToken(token) {
+    console.log("OK", token);
+  }
+
 }

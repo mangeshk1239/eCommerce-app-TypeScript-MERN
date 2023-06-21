@@ -8,28 +8,7 @@ import Copyright from '../../components/Copyright';
 import Quantity from "../../components/Quantity";
 import { ParentContext, ACTION } from '../../App';
 import { useNavigate } from 'react-router-dom';
-
-interface IProduct {
-    brand: string,
-    category: string,
-    description: string,
-    discountPercentage: number,
-    id: number,
-    images: string[],
-    price: number,
-    rating: number,
-    stock: number,
-    thumbnail: string,
-    title: string,
-}
-
-interface ICartItem {
-    product_id: number,
-    product_name: string,
-    product_price: number | undefined,
-    product_quantity: number,
-    product_image: string
-}
+import { IProduct, ICartItem } from '../../resources/interface';
 
 const defaultTheme = M.createTheme();
 
@@ -152,7 +131,7 @@ export default function SingleProductPage(): JSX.Element {
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    function handleCart(data): void {
+    function handleCart(data: IProduct): void {
 
         const payload: ICartItem = {
             product_id: data.id,
@@ -168,5 +147,5 @@ export default function SingleProductPage(): JSX.Element {
     function isAuthenticated(error) {
         if (error?.response.status === 401) return navigate("/login");
     }
-    
+
 }

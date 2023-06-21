@@ -1,14 +1,7 @@
 import * as React from 'react';
 import * as M from "@mui/material";
 import { ParentContext } from '../../App';
-
-interface ICartItem {
-    product_id: number,
-    product_name: string,
-    product_price: number,
-    product_quantity: number,
-    product_image: string
-}
+import { ICartItem } from '../../resources/interface';
 
 const addresses = ['1 MUI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
 const payments = [
@@ -22,9 +15,9 @@ export default function Review() {
     const fetchContext = React.useContext(ParentContext);
     const { state, dispatch } = fetchContext;
 
-    let total: number;
+    let total: number | undefined;
     if (state) {
-        total = state.CART.map(ele => ele.product_price * ele.product_quantity).reduce((a: number, b: number) => a + b, 0);
+        total = state.CART.map((ele: ICartItem) => ele.product_price * ele.product_quantity).reduce((a: number, b: number) => a + b, 0);
     }
 
     return (

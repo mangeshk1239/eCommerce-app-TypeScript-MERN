@@ -7,14 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import Copyright from '../../components/Copyright';
 import { useNavigate } from 'react-router-dom';
 import { ParentContext } from '../../App';
-
-interface ICartItem {
-    product_id: number,
-    product_name: string,
-    product_price: number | undefined,
-    product_quantity: number,
-    product_image: string
-}
+import { ICartItem } from '../../resources/interface';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = M.createTheme();
@@ -24,7 +17,7 @@ export default function CartPage(): JSX.Element {
     const navigate = useNavigate();
     const access_token: string | undefined = getCookie("access_token");
 
-    const { data, isSuccess, error } = useQuery<AxiosResponse, Error>({
+    const { error } = useQuery<AxiosResponse, Error>({
         queryKey: ['getCartPageData'],
         queryFn: getPageData,
         cacheTime: 0,
@@ -37,10 +30,10 @@ export default function CartPage(): JSX.Element {
     const [open, setOpen] = React.useState<boolean>(true);
     const drawerWidth = 240;
 
-    let subTotal: number;
+    let subTotal: number | undefined;
 
     if (state) {
-        subTotal = state.CART.map(ele => ele.product_price * ele.product_quantity).reduce((a: number, b: number) => a + b, 0);
+        subTotal = state.CART.map((ele: ICartItem) => ele.product_price * ele.product_quantity).reduce((a: number, b: number) => a + b, 0);
     }
 
     isAuthenticated(error);
@@ -163,7 +156,7 @@ export default function CartPage(): JSX.Element {
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    function isAuthenticated(error) {
+    function isAuthenticated(error: any) {
         if (error?.response.status === 401) return navigate("/login");
     }
 }

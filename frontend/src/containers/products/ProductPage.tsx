@@ -117,7 +117,7 @@ export default function ProductPage(): JSX.Element {
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    function isAuthenticated(error) {
+    function isAuthenticated(error: any) {
         if (error?.response.status === 401) return navigate("/login");
     }
     

@@ -19,7 +19,7 @@ app.use(express.json());
 app.get("/api/account/dashboard", isAuthenticated, dashboardController.getDashboardData);
 app.get("/api/account/products", isAuthenticated, productsController.getProductsData);
 app.get("/api/account/cart", isAuthenticated, (req: Request, res: Response) => res.status(200).send({ success: true }));
-app.get("/api/account/checkout", isAuthenticated, (req: Request, res: Response) => res.status(200).send({ success: true }));
+app.get("/api/account/checkout", isAuthenticated, (req: Request, res: Response) => res.status(200).send({ success: true, email: res?.locals.email, stripe_key: process.env.STRIPE_KEY }));
 
 // POST
 app.post("/api/account/register", accountController.registerAccount);
