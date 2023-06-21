@@ -29,6 +29,7 @@ export async function registerAccount(req: Request, res: Response): Promise<void
             const accountData = new AccountData<IAccountData>({
                 accountName: name,
                 accountEmail: email,
+                accountOrders: [],
                 createdAt: new Date()
             });
 

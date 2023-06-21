@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosResponse } from "axios";
 import StripeCheckout from 'react-stripe-checkout';
+import { IOrder } from '../../resources/interface';
+import { ACTION } from '../../App';
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
@@ -27,7 +29,7 @@ function getStepContent(step: number) {
 
 const defaultTheme = M.createTheme();
 
-export default function CheckoutPage() {
+export default function CheckoutPage(): JSX.Element {
 
   const navigate = useNavigate();
   const access_token: string | undefined = getCookie("access_token");
@@ -40,7 +42,7 @@ export default function CheckoutPage() {
   });
 
   const fetchContext = React.useContext(ParentContext);
-  const { state } = fetchContext;
+  const { state, dispatch } = fetchContext;
 
   if (state.CART.length === 0) return navigate("/cart");
 
@@ -162,8 +164,26 @@ export default function CheckoutPage() {
     if (error?.response.status === 401) return navigate("/login");
   }
 
-  function onToken(token) {
-    console.log("OK", token);
+  async function onToken(token: any) {
+
+    const payload: IOrder = {
+      orderID: token.id,
+      orderTotal: total,
+      email: token.email,
+      lineItems: state.CART,
+      createdAt: new Date()
+    }
+
+    const response: AxiosResponse = await axios.post("/api/order/create", { ...payload }, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (response.data.success) {
+      dispatch({ type: ACTION.RESET });
+      navigate("/dashboard");
+    }
   }
 
 }

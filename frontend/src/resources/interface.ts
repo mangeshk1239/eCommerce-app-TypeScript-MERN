@@ -33,7 +33,8 @@ export interface ICart {
 export interface IAction {
     CART: string,
     CHECKOUT_ADDRESS: ICheckoutAddress,
-    CHECKOUT_PAYMENT: ICheckoutPayment
+    CHECKOUT_PAYMENT: ICheckoutPayment,
+    RESET: string
 }
 
 export interface IProduct {
@@ -48,4 +49,12 @@ export interface IProduct {
     stock: number,
     thumbnail: string,
     title: string,
+}
+
+export interface IOrder {
+    orderID: string,
+    orderTotal: number | undefined,
+    email: string,
+    createdAt: Date,
+    lineItems: ICartItem[]
 }

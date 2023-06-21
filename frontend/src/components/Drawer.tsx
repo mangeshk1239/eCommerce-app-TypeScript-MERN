@@ -4,7 +4,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import MuiDrawer from '@mui/material/Drawer';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PeopleIcon from '@mui/icons-material/People';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import InventoryIcon from '@mui/icons-material/Inventory';
 import { useNavigate } from 'react-router-dom';
 
 interface IProps {
@@ -73,13 +74,13 @@ export default function Drawer({ open, setOpen, drawerWidth }: IProps): JSX.Elem
                         </M.ListItemButton>
                         <M.ListItemButton onClick={() => navigate("/products")}>
                             <M.ListItemIcon>
-                                <PeopleIcon />
+                                <InventoryIcon />
                             </M.ListItemIcon>
                             <M.ListItemText primary="Products" />
                         </M.ListItemButton>
                         <M.ListItemButton onClick={() => navigate("/orders")}>
                             <M.ListItemIcon>
-                                <ShoppingCartIcon />
+                                <DraftsIcon />
                             </M.ListItemIcon>
                             <M.ListItemText primary="Orders" />
                         </M.ListItemButton>
