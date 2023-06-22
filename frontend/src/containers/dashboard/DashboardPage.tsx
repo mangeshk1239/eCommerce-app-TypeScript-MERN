@@ -5,6 +5,7 @@ import Drawer from "../../components/Drawer";
 import axios, { AxiosResponse } from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from 'react-router-dom';
+import Copyright from '../../components/Copyright';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = M.createTheme();
@@ -14,7 +15,7 @@ export default function DashboardPage(): JSX.Element {
     const navigate = useNavigate();
     const access_token: string | undefined = getCookie("access_token");
 
-    const { error } = useQuery<AxiosResponse, Error>({
+    const { data, error } = useQuery<AxiosResponse, Error>({
         queryKey: ['getDashboardPageData'],
         queryFn: getPageData,
         cacheTime: 0,
@@ -55,9 +56,11 @@ export default function DashboardPage(): JSX.Element {
                                             p: 2,
                                             display: 'flex',
                                             flexDirection: 'column',
-                                            height: 240,
                                         }}
                                     >
+                                        <M.Typography variant="h5" gutterBottom><b>Welcome, {data?.data?.accountName}</b></M.Typography>
+                                        <M.Typography variant="h6" gutterBottom>Get started by clicking the link below which will take you to the Products page where you will be able to buy the Product of your choice.</M.Typography>
+                                        <M.Link sx={{ cursor: "pointer" }} onClick={() => navigate("/products")}><b>View all Products</b></M.Link>
                                     </M.Paper>
                                 </M.Grid>
                                 {/* Recent Deposits */}
@@ -67,18 +70,15 @@ export default function DashboardPage(): JSX.Element {
                                             p: 2,
                                             display: 'flex',
                                             flexDirection: 'column',
-                                            height: 240,
                                         }}
                                     >
-                                    </M.Paper>
-                                </M.Grid>
-                                {/* Recent Orders */}
-                                <M.Grid item xs={12}>
-                                    <M.Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                                        <M.Typography variant="h5" gutterBottom><b>Total Orders</b></M.Typography>
+                                        <M.Typography variant="h2" gutterBottom><b>{data?.data?.accountOrders.length}</b></M.Typography>
+                                        <M.Link sx={{ cursor: "pointer" }} onClick={() => navigate("/orders")}><b>View all Orders</b></M.Link>
                                     </M.Paper>
                                 </M.Grid>
                             </M.Grid>
-                            {/* <Copyright sx={{ pt: 4 }} /> */}
+                            <Copyright sx={{ pt: 4 }} />
                         </M.Container>
                     </M.Box>
                 </M.Box>
@@ -103,5 +103,5 @@ export default function DashboardPage(): JSX.Element {
     function isAuthenticated(error: any) {
         if (error?.response.status === 401) return navigate("/login");
     }
-    
+
 }

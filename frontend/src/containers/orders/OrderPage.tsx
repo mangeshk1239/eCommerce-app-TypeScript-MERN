@@ -72,7 +72,7 @@ export default function OrderPage(): JSX.Element {
                             <M.Grid container spacing={3}>
                                 <M.Grid item xs={12}>
                                     <M.Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                        <M.Container sx={{ py: 4 }} maxWidth="md">
+                                        <M.Container sx={{ py: 4 }} maxWidth="lg">
                                             {
                                                 isSuccess && data?.data
                                                     ?
@@ -81,16 +81,48 @@ export default function OrderPage(): JSX.Element {
                                                             <M.Table sx={{ minWidth: 700 }} aria-label="customized table">
                                                                 <M.TableHead>
                                                                     <M.TableRow>
-                                                                        <StyledTableCell>Order ID</StyledTableCell>
-                                                                        <StyledTableCell align="right">Order Total</StyledTableCell>
-                                                                        <StyledTableCell align="right">Order Date</StyledTableCell>
+                                                                        <StyledTableCell align="center">Sr. No.</StyledTableCell>
+                                                                        <StyledTableCell align="center">Order ID</StyledTableCell>
+                                                                        <StyledTableCell align="center">Order Products</StyledTableCell>
+                                                                        <StyledTableCell align="center">Order Total</StyledTableCell>
+                                                                        <StyledTableCell align="center">Order Date</StyledTableCell>
                                                                     </M.TableRow>
                                                                 </M.TableHead>
                                                                 <M.TableBody>
                                                                     {
                                                                         data?.data?.map((order: IOrder, index) => (
                                                                             <StyledTableRow key={index}>
-                                                                                <StyledTableCell component="th" scope="row">{order.orderID}</StyledTableCell>
+                                                                                <StyledTableCell component="th" align="left" scope="row">{index + 1}</StyledTableCell>
+                                                                                <StyledTableCell component="th" align="left" scope="row">{order.orderID}</StyledTableCell>
+                                                                                <StyledTableCell align="center">
+                                                                                    <M.List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                                                                                        {
+                                                                                            order.lineItems.map((product) => {
+                                                                                                return <M.ListItem alignItems="flex-start">
+                                                                                                    <M.ListItemAvatar>
+                                                                                                        <M.Avatar alt="Remy Sharp" src={product.product_image} />
+                                                                                                    </M.ListItemAvatar>
+                                                                                                    <M.ListItemText
+                                                                                                        primary={product.product_name}
+                                                                                                        secondary={
+                                                                                                            <React.Fragment>
+                                                                                                                <M.Typography
+                                                                                                                    sx={{ display: 'inline' }}
+                                                                                                                    component="span"
+                                                                                                                    variant="body2"
+                                                                                                                    color="text.primary"
+                                                                                                                >
+                                                                                                                    Quantity:
+                                                                                                                </M.Typography>
+                                                                                                                {` ${product.product_quantity}`}
+                                                                                                            </React.Fragment>
+                                                                                                        }
+                                                                                                    />
+                                                                                                </M.ListItem>
+                                                                                            })
+                                                                                        }
+                                                                                    </M.List>
+                                                                                </StyledTableCell>
                                                                                 <StyledTableCell align="right">${order.orderTotal}</StyledTableCell>
                                                                                 <StyledTableCell align="right">{order.createdAt}</StyledTableCell>
                                                                             </StyledTableRow>
