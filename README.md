@@ -2,7 +2,7 @@
 
 ## Overview
 
-The eCommerce app is a convenient and user-friendly platform that allows users to easily shop for a wide range of products from the comfort of their own homes. With a sleek and intuitive interface, navigating through the app is a breeze. Whether you are searching for the latest fashion trends, electronic gadgets, or household essentials, the app has got you covered. With its secure payment options and reliable shipping services, you can shop with confidence knowing that your personal information is protected and your orders will arrive in a timely manner. The app also provides personalized recommendations based on your browsing history, ensuring that you discover new and exciting items tailored to your preferences. With this eCommerce app, shopping has never been more enjoyable and hassle-free.
+The eCommerce app is a convenient and user-friendly platform that allows users to easily shop for a wide range of products from the comfort of their own homes. With a sleek and intuitive interface, navigating through the app is a breeze. Whether you are searching for the latest fashion trends, electronic gadgets, or household essentials, the app has got you covered. With its secure payment options and reliable shipping services, you can shop with confidence knowing that your personal information is protected and your orders will arrive in a timely manner. The app also provides personalized recommendations based on your browsing history, ensuring that you discover new and exciting items tailored to your preferences. This app is a replica app of eCommerce platforms.
 
 ## Features
 
@@ -18,6 +18,7 @@ This app combines a number of third party open-source tools:
 - [Vite](https://vitejs.dev/) builds the [React](https://reactjs.org/) frontend.
 - [React Router](https://reactrouter.com/) is used for routing. We wrap this with file-based routing.
 - [React Query](https://react-query.tanstack.com/) queries the Admin API.
+- [MongoDB](https://www.mongodb.com/) is used as a database.
 
 ## Getting started
 
@@ -52,8 +53,3 @@ npm install
 ```shell
 npm run dev
 ```
-
-### Available Scripts
-Here are the available scripts in the package.json file:
-
-To execute any of the scripts, simply run npm run <script-name> in your terminal or command prompt, replacing <script-name> with the desired script (e.g., npm run build or npm run deploy).
