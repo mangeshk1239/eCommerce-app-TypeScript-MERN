@@ -24,26 +24,30 @@ This app combines a number of third party open-source tools:
 ### Requirements
 
 1. You must [download and install Node.js](https://nodejs.org/en/download/) if you don't already have it.
+2. You must [download and install TypeScript](https://www.typescriptlang.org/download) if you don't already have it.
 
 ### Installing the project
 1. Clone the repository: Clone this project repository using the following command in your terminal or command prompt:
 
 ```shell
-git clone https://github.com/
+git clone https://github.com/mangeshk1239/eCommerce-app-TypeScript-MERN.git
 ```
 
-2. Navigate to the project directory: Change to the packagebooster directory within the main project folder:
-cd .\packagebooster\
+2. Navigate to the project directory: Change to the eCommerce-app-TypeScript-MERN directory within the main project folder:
+cd .\eCommerce-app-TypeScript-MERN\
 
-3. 
-Install dependencies: Run the following command to install the necessary dependencies:
+3. This directory consists of two folders: backend and frontend.
+
+4. 
+Install dependencies in both the folders: Run the following command to install the necessary dependencies:
 
 
 ```shell
 npm install
 ```
+5. Create a ".env" file in the "backend" directory and copy the environment variables from the .envexample file to this file.
 
-4. Run the development environment: Use the following command to start the development environment:
+6. Run the development environment for both the folders: Use the following command to start the development environment:
 
 ```shell
 npm run dev

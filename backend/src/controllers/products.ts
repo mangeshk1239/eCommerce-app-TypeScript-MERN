@@ -1,11 +1,9 @@
 import { Request, Response } from "express";
-import axios, { AxiosResponse } from "axios";
+import sampleProducts from "../sample-products.json"
 
 export async function getProductsData(req: Request, res: Response): Promise<void> {
-
     try {
-
-        const data: AxiosResponse = await axios.get("https://dummyjson.com/products").then(response => response.data);
+        const data: any = sampleProducts;
         res.status(200).send({ success: true, data });
 
     } catch (error) {
